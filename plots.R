@@ -20,8 +20,11 @@ rownames(exprdf) = exprdf$Pbid
 # 1a. Func to draw the abundance violin plot (log scale)
 doAbundancePlot_log = function(df,geneName,yrange){
   df$expression = as.numeric(as.character(df$expression))
-  Yaxlow=round(yrange[1] - 20)
-  Yaxhigh=round(yrange[2] + 20)
+  Ylow=max(log2(yrange[1]),0)
+  Yhigh=log2(yrange[2])
+  Ybuffer=(Yhigh-Ylow)/5
+  Yaxlow=round(Ylow - Ybuffer)
+  Yaxhigh=round(Yhigh + Ybuffer)
   Yaxstep = round((Yaxhigh-Yaxlow)/8, digits=4)
   p=ggplot(aes(y = log2(expression), x = Pbid, fill = Pbid, group = Pbid, color = Pbid), data = df) + 
     geom_violin(trim=FALSE) +
@@ -29,7 +32,6 @@ doAbundancePlot_log = function(df,geneName,yrange){
     geom_point(fill=NA, color = 'black', alpha = ggalpha, shape = ggshape, show.legend = FALSE) +
     #    scale_fill_manual(values=c('darkgreen', 'blue', 'purple', 'orange')) +
     ggtitle('Abundance') +
-    xlab('Cell line') +
     ylab('log2 expression') +
     scale_y_continuous(limits=c(Yaxlow,Yaxhigh),breaks=seq(Yaxlow,Yaxhigh,by=Yaxstep),labels=seq(Yaxlow,Yaxhigh,by=Yaxstep)) + 
     theme(
@@ -50,8 +52,11 @@ doAbundancePlot_log = function(df,geneName,yrange){
 # 1b. Func to draw the abundance violin plot (linear scale)
 doAbundancePlot_linear = function(df,geneName,yrange){
   df$expression = as.numeric(as.character(df$expression))
-  Yaxlow=max(round(yrange[1]) - 20,0)
-  Yaxhigh=round(yrange[2]) + 20 
+  Ylow=yrange[1]
+  Yhigh=yrange[2]
+  Ybuffer=(Yhigh-Ylow)/5
+  Yaxlow=max(round(Ylow) - Ybuffer,0)
+  Yaxhigh=round(Yhigh) + Ybuffer 
   Yaxstep = round((Yaxhigh-Yaxlow)/8, digits=4)
   p=ggplot(aes(y = expression, x = Pbid, fill = Pbid, group = Pbid, color = Pbid), data = df) + 
     geom_violin(trim=FALSE) +
@@ -59,7 +64,6 @@ doAbundancePlot_linear = function(df,geneName,yrange){
     geom_point(fill=NA, color = 'black', alpha = ggalpha, shape = ggshape, show.legend = FALSE) +
     #    scale_fill_manual(values=c('darkgreen', 'blue', 'purple', 'orange')) +
     ggtitle('Abundance') +
-    xlab('Cell line') +
     ylab('Expression') +
     scale_y_continuous(limits=c(Yaxlow,Yaxhigh),breaks=seq(Yaxlow,Yaxhigh,by=Yaxstep),labels=seq(Yaxlow,Yaxhigh,by=Yaxstep)) + 
     theme(
@@ -82,8 +86,11 @@ doAbundancePlot_linear = function(df,geneName,yrange){
 # 2a. Func to draw the isoform usage ratio violin plot (log scale)
 doUsagePlot_log = function(df,geneName,yrange){
   df$expression = as.numeric(as.character(df$expression))
-  Yaxlow=round(yrange[1] - 20)
-  Yaxhigh=round(yrange[2] + 20)
+  Ylow=max(log2(yrange[1]),0)
+  Yhigh=log2(yrange[2])
+  Ybuffer=(Yhigh-Ylow)/5
+  Yaxlow=round(Ylow) - Ybuffer
+  Yaxhigh=round(Yhigh) + Ybuffer
   Yaxstep = round((Yaxhigh-Yaxlow)/8, digits=4)
   p=ggplot(aes(y = log2(expression), x = Pbid, fill = Pbid, group = Pbid, color = Pbid), data = df) + 
     geom_violin(trim=FALSE) +
@@ -91,8 +98,7 @@ doUsagePlot_log = function(df,geneName,yrange){
     geom_point(fill=NA, color = 'black', alpha = ggalpha, shape = ggshape, show.legend = FALSE) +
     #    scale_fill_manual(values=c('darkgreen', 'blue', 'purple', 'orange')) +
     ggtitle('Usage') +
-    xlab('Cell line') +
-    ylab('log2 expression') +
+    ylab('') +
     scale_y_continuous(limits=c(Yaxlow,Yaxhigh),breaks=seq(Yaxlow,Yaxhigh,by=Yaxstep),labels=seq(Yaxlow,Yaxhigh,by=Yaxstep)) + 
     theme(
       panel.grid.major = element_blank(),
@@ -104,8 +110,8 @@ doUsagePlot_log = function(df,geneName,yrange){
       axis.ticks.y = element_blank(),
       axis.text.y = element_blank(),
       axis.title.x = element_blank(),
-      axis.title.y = element_blank(),
-#      axis.title.y = element_text(margin=margin(t=0, r=10.5, b=0, l=0), size=22),
+      # axis.title.y = element_blank(),
+      # axis.title.y = element_text(margin=margin(t=0, r=10.5, b=0, l=0), size=22),
       axis.ticks.length = unit(0.33, 'cm'),
       legend.position = 'none'
     ) +
@@ -115,8 +121,11 @@ doUsagePlot_log = function(df,geneName,yrange){
 # 2a. Func to draw the isoform usage ratio violin plot (linear scale)
 doUsagePlot_linear = function(df,geneName,yrange){
   df$expression = as.numeric(as.character(df$expression))
-  Yaxlow=max(round(yrange[1]) - 20,0)
-  Yaxhigh=round(yrange[2]) + 20 
+  Ylow=yrange[1]
+  Yhigh=yrange[2]
+  Ybuffer=(Yhigh-Ylow)/5
+  Yaxlow=max(round(Ylow) - Ybuffer,0)
+  Yaxhigh=round(Yhigh) + Ybuffer
   Yaxstep = round((Yaxhigh-Yaxlow)/8, digits=4)
   p=ggplot(aes(y = expression, x = Pbid, fill = Pbid, group = Pbid, color = Pbid), data = df) + 
     geom_violin(trim=FALSE) +
@@ -124,8 +133,7 @@ doUsagePlot_linear = function(df,geneName,yrange){
     geom_point(fill=NA, color = 'black', alpha = ggalpha, shape = ggshape, show.legend = FALSE) +
     #    scale_fill_manual(values=c('darkgreen', 'blue', 'purple', 'orange')) +
     ggtitle('Usage') +
-    xlab('Cell line') +
-    ylab('Expression') +
+    ylab('') +
     scale_y_continuous(limits=c(Yaxlow,Yaxhigh),breaks=seq(Yaxlow,Yaxhigh,by=Yaxstep),labels=seq(Yaxlow,Yaxhigh,by=Yaxstep)) + 
     theme(
       panel.grid.major = element_blank(),
@@ -137,8 +145,8 @@ doUsagePlot_linear = function(df,geneName,yrange){
       axis.ticks.y = element_blank(),
       axis.text.y = element_blank(),
       axis.title.x = element_blank(),
-      axis.title.y = element_blank(),
-      #      axis.title.y = element_text(margin=margin(t=0, r=10.5, b=0, l=0), size=22),
+      # axis.title.y = element_blank(),
+      # axis.title.y = element_text(margin=margin(t=0, r=10.5, b=0, l=0), size=22),
       axis.ticks.length = unit(0.33, 'cm'),
       legend.position = 'none'
     ) +

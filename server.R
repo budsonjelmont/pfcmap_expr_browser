@@ -4,6 +4,8 @@ library(ggplot2)
 library(reshape2)
 source('./plots.R')
 
+idcols = c('Pbid','gene_name')
+
 basecols = c('MSSM_060','MSSM_072',
              'MSSM_073','MSSM_104',
              'MSSM_182','MSSM_401',
@@ -58,67 +60,52 @@ rownames(exprdf) = exprdf$Row.names
 #pbids = c('PBfusion.988.2','PBfusion.989.2')
 #df = melt(exprdf[pbids,datcols], value.name = 'expression', variable.name='sampleName') #gives you the input to ggplot
 
-# Define server logic required to build the violin plot
+# Define server logic to make the plots
 shinyServer(function(input, output) {
-    output$exprPlot <- renderPlot({
+    # Construct list of data columns to get
+    # datcols = reactive({
+    #   if(cap=='Capture'){
+    #     datcols = postcapcols
+    #   } else {
+    #     datcols = precapcols
+    #   }
+    # })
+    # Reshape data for input to ggplot
+    df = reactive({
       query=input$genequery
       if(query==''){return()}
       cap=input$capbtn
-      scale=input$logbtn
       if(cap=='Capture'){
-        datcols = precapcols
-      } else {
         datcols = postcapcols
-      }
-      datcols = c('Pbid','gene_name',datcols)
-      # datcols = c('Pbid','gene_name',
-      #   'PreCap_MSSM_060','PreCap_MSSM_072',
-      #   'PreCap_MSSM_073','PreCap_MSSM_104',
-      #   'PreCap_MSSM_182','PreCap_MSSM_401',
-      #   'PreCap_Pitt_034','PreCap_Pitt_046',
-      #   'PreCap_Pitt_122','PreCap_Pitt_140')
-      df=melt(exprdf[which(exprdf$gene_name==query),datcols], value.name = 'expression', variable.name='sampleName') #gives you the input to ggplot
-      # generate bins based on input$bins from ui.R
-      #x    <- faithful[, 2] 
-      #bins <- seq(min(x), max(x), length.out = input$bins + 1)
-      
-      # draw the histogram with the specified number of bins
-      #hist(x, breaks = bins, col = 'darkgray', border = 'white')
-      if(scale=='Log2'){
-        doAbundancePlot_log(df,query,range(df$expression))
       } else {
-        doAbundancePlot_linear(df,query,range(df$expression))
+        datcols = precapcols
+      }
+      # Get ratio columns as well
+      #datcols=datcols + unlist(lapply(datcols, function(x){paste(x,'ratio',sep='_')}))
+      datcols=c(idcols,datcols)
+      df=melt(exprdf[which(exprdf$gene_name==query),datcols], value.name = 'expression', variable.name='sampleName') #gives you the input to ggplot
+      df=df[df$expression!=0,]
+    })
+    # Make expression plot
+    output$exprPlot = renderPlot({
+      if(input$genequery==''){return()}
+      df=df()
+      scale=input$scalebtn
+      if(scale=='Log2'){
+        doAbundancePlot_log(df,range(df$expression))
+      } else {
+        doAbundancePlot_linear(df,range(df$expression))
       }
     })
-    output$ratioPlot <- renderPlot({
-      query = input$genequery
-     if(query==''){return()}
-      cap = input$capbtn
-      scale = input$logbtn
-      if(cap=='Capture'){
-        datcols = precapcols
-      } else {
-        datcols = postcapcols
-      }
-      datcols = c('Pbid','gene_name',datcols)
-      # datcols = c('Pbid','gene_name',
-      #  'PreCap_MSSM_060_ratio','PreCap_MSSM_072_ratio',
-      #  'PreCap_MSSM_073_ratio','PreCap_MSSM_104_ratio',
-      #  'PreCap_MSSM_182_ratio','PreCap_MSSM_401_ratio',
-      #  'PreCap_Pitt_034_ratio','PreCap_Pitt_046_ratio',
-      #  'PreCap_Pitt_122_ratio','PreCap_Pitt_140_ratio')
-      
-      df=melt(exprdf[which(exprdf$gene_name==query),datcols], value.name = 'expression', variable.name='sampleName') #gives you the input to ggplot
-      # generate bins based on input$bins from ui.R
-      #x    <- faithful[, 2] 
-      #bins <- seq(min(x), max(x), length.out = input$bins + 1)
-      
-      # draw the histogram with the specified number of bins
-      #hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    # Make isoform usage plot
+    output$ratioPlot = renderPlot({
+      if(input$genequery==''){return()}
+      df=df()
+      scale=input$scalebtn
       if(scale=='Log2'){
-        doUsagePlot_log(df,query,range(df$expression))
+        doUsagePlot_log(df,range(df$expression))
       } else {
-        doUsagePlot_linear(df,query,range(df$expression))
+        doUsagePlot_linear(df,range(df$expression))
       }
     })
 })

@@ -58,7 +58,7 @@ shinyUI(
                      #    size = "normal", direction = "horizontal", fullwidth = FALSE)
                    awesomeRadio('capbtn', '', c('Capture','No capture'), selected = 'Capture', inline = FALSE,
                                 status = "primary", checkbox = FALSE, width = NULL),
-                   awesomeRadio('logbtn', '', c('Log2','Linear'), selected = 'Log2', inline = FALSE,
+                   awesomeRadio('scalebtn', '', c('Log2','Linear'), selected = 'Log2', inline = FALSE,
                                 status = "primary", checkbox = FALSE, width = NULL)
                      )
       )

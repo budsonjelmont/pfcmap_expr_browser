@@ -10,7 +10,7 @@ ggshape = 1
 #Yaxstep = 2
 
 # Read dataset
-infile = '~/Documents/lncRNA map/FL-RH_combined_joined-isoform-TPM-counts_median_average_YH_GeneIDsAdded.csv'
+infile = 'FL-RH_combined_joined-isoform-TPM-counts_median_average_YH_GeneIDsAdded.csv'
 exprdf = read.csv(infile)
 
 # Preprocessing the expression data frame to add usage ratios
@@ -18,9 +18,9 @@ rownames(exprdf) = exprdf$Pbid
 
 ###############
 # 1a. Func to draw the abundance violin plot (log scale)
-doAbundancePlot_log = function(df,geneName,yrange){
+doAbundancePlot_log = function(df,yrange){
   df$expression = as.numeric(as.character(df$expression))
-  Ylow=max(log2(yrange[1]),0)
+  Ylow=log2(yrange[1])
   Yhigh=log2(yrange[2])
   Ybuffer=(Yhigh-Ylow)/5
   Yaxlow=round(Ylow - Ybuffer)
@@ -50,13 +50,13 @@ doAbundancePlot_log = function(df,geneName,yrange){
     return(p)
 }
 # 1b. Func to draw the abundance violin plot (linear scale)
-doAbundancePlot_linear = function(df,geneName,yrange){
+doAbundancePlot_linear = function(df,yrange){
   df$expression = as.numeric(as.character(df$expression))
   Ylow=yrange[1]
   Yhigh=yrange[2]
   Ybuffer=(Yhigh-Ylow)/5
-  Yaxlow=max(round(Ylow) - Ybuffer,0)
-  Yaxhigh=round(Yhigh) + Ybuffer 
+  Yaxlow=max(round(Ylow - Ybuffer),0)
+  Yaxhigh=round(Yhigh + Ybuffer) 
   Yaxstep = round((Yaxhigh-Yaxlow)/8, digits=4)
   p=ggplot(aes(y = expression, x = Pbid, fill = Pbid, group = Pbid, color = Pbid), data = df) + 
     geom_violin(trim=FALSE) +
@@ -84,13 +84,13 @@ doAbundancePlot_linear = function(df,geneName,yrange){
 ################
 ###############
 # 2a. Func to draw the isoform usage ratio violin plot (log scale)
-doUsagePlot_log = function(df,geneName,yrange){
+doUsagePlot_log = function(df,yrange){
   df$expression = as.numeric(as.character(df$expression))
-  Ylow=max(log2(yrange[1]),0)
+  Ylow=log2(yrange[1])
   Yhigh=log2(yrange[2])
   Ybuffer=(Yhigh-Ylow)/5
-  Yaxlow=round(Ylow) - Ybuffer
-  Yaxhigh=round(Yhigh) + Ybuffer
+  Yaxlow=round(Ylow - Ybuffer)
+  Yaxhigh=round(Yhigh + Ybuffer)
   Yaxstep = round((Yaxhigh-Yaxlow)/8, digits=4)
   p=ggplot(aes(y = log2(expression), x = Pbid, fill = Pbid, group = Pbid, color = Pbid), data = df) + 
     geom_violin(trim=FALSE) +
@@ -119,13 +119,13 @@ doUsagePlot_log = function(df,geneName,yrange){
   return(p)
 }
 # 2a. Func to draw the isoform usage ratio violin plot (linear scale)
-doUsagePlot_linear = function(df,geneName,yrange){
+doUsagePlot_linear = function(df,yrange){
   df$expression = as.numeric(as.character(df$expression))
   Ylow=yrange[1]
   Yhigh=yrange[2]
   Ybuffer=(Yhigh-Ylow)/5
-  Yaxlow=max(round(Ylow) - Ybuffer,0)
-  Yaxhigh=round(Yhigh) + Ybuffer
+  Yaxlow=max(round(Ylow - Ybuffer),0)
+  Yaxhigh=round(Yhigh + Ybuffer)
   Yaxstep = round((Yaxhigh-Yaxlow)/8, digits=4)
   p=ggplot(aes(y = expression, x = Pbid, fill = Pbid, group = Pbid, color = Pbid), data = df) + 
     geom_violin(trim=FALSE) +

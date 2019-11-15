@@ -10,7 +10,7 @@ ggshape = 1
 #Yaxstep = 2
 
 # Read dataset
-infile = 'FL-RH_combined_joined-isoform-TPM-counts_median_average_YH_GeneIDsAdded.csv'
+infile = 'FL-RH_combined_joined-isoform-TPM-counts_median_average_YH_GeneIDsAdded+ratios.csv'
 exprdf = read.csv(infile)
 
 # Preprocessing the expression data frame to add usage ratios
@@ -106,9 +106,9 @@ doUsagePlot_log = function(df,yrange){
       panel.background = element_blank(),
       panel.border = element_rect(color='black', size=1.25, fill=NA, linetype='solid'),
       axis.text.x = element_text(colour='black', size=12, angle=30, hjust=1),
-      #axis.text.y = element_text(colour='black', size=20),
-      axis.ticks.y = element_blank(),
-      axis.text.y = element_blank(),
+      axis.text.y = element_text(colour='black', size=20),
+      #axis.ticks.y = element_blank(),
+      #axis.text.y = element_blank(),
       axis.title.x = element_blank(),
       # axis.title.y = element_blank(),
       # axis.title.y = element_text(margin=margin(t=0, r=10.5, b=0, l=0), size=22),
@@ -121,11 +121,11 @@ doUsagePlot_log = function(df,yrange){
 # 2a. Func to draw the isoform usage ratio violin plot (linear scale)
 doUsagePlot_linear = function(df,yrange){
   df$expression = as.numeric(as.character(df$expression))
-  Ylow=yrange[1]
-  Yhigh=yrange[2]
+  Ylow=0
+  Yhigh=1
   Ybuffer=(Yhigh-Ylow)/5
-  Yaxlow=max(round(Ylow - Ybuffer),0)
-  Yaxhigh=round(Yhigh + Ybuffer)
+  Yaxlow=0
+  Yaxhigh=1
   Yaxstep = round((Yaxhigh-Yaxlow)/8, digits=4)
   p=ggplot(aes(y = expression, x = Pbid, fill = Pbid, group = Pbid, color = Pbid), data = df) + 
     geom_violin(trim=FALSE) +
@@ -141,9 +141,9 @@ doUsagePlot_linear = function(df,yrange){
       panel.background = element_blank(),
       panel.border = element_rect(color='black', size=1.25, fill=NA, linetype='solid'),
       axis.text.x = element_text(colour='black', size=12, angle=30, hjust=1),
-      #axis.text.y = element_text(colour='black', size=20),
-      axis.ticks.y = element_blank(),
-      axis.text.y = element_blank(),
+      axis.text.y = element_text(colour='black', size=20),
+      #axis.ticks.y = element_blank(),
+      #axis.text.y = element_blank(),
       axis.title.x = element_blank(),
       # axis.title.y = element_blank(),
       # axis.title.y = element_text(margin=margin(t=0, r=10.5, b=0, l=0), size=22),

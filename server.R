@@ -24,39 +24,6 @@ postcapcols = c('PostCap_MSSM_060','PostCap_MSSM_072',
                 'PostCap_Pitt_034','PostCap_Pitt_046',
                 'PostCap_Pitt_122','PostCap_Pitt_140')
 
-# Calculate total expression (sum) across all isoforms
-exprdf$PreCap_exprsum = apply(exprdf[precapcols],1,sum)
-exprdf$PostCap_exprsum = apply(exprdf[precapcols],1,sum)
-
-# Calculate usage ratio of each isoform
-precapratios = lapply(
-  precapcols,
-  function(coly){
-    exprdf[coly]/exprdf$PreCap_exprsum
-  }     
-)
-
-# Calculate usage ratio of each isoform
-postcapratios = lapply(
-  postcapcols,
-  function(coly){
-    exprdf[coly]/exprdf$PostCap_exprsum
-  }     
-)
-
-# Convert to data frame and assign names
-precapratios = as.data.frame(precapratios)
-postcapratios = as.data.frame(postcapratios)
-colnames(precapratios) = paste(precapcols,'ratio',sep='_')
-colnames(postcapratios) = paste(postcapcols,'ratio',sep='_')
-
-# Add ratio columns to data frame & then reassign row names
-exprdf = merge(exprdf, precapratios, by='row.names', sort = TRUE) # This step drops the rownames from the resulting dataframe & adds a column 'Row.names'
-exprdf = merge(exprdf, postcapratios, by.x='Row.names', by.y='row.names', sort = TRUE)
-rownames(exprdf) = exprdf$Row.names
-
-#exprdf = exprdf[,datcols]
-
 #pbids = c('PBfusion.988.2','PBfusion.989.2')
 #df = melt(exprdf[pbids,datcols], value.name = 'expression', variable.name='sampleName') #gives you the input to ggplot
 
@@ -70,42 +37,53 @@ shinyServer(function(input, output) {
     #     datcols = precapcols
     #   }
     # })
-    # Reshape data for input to ggplot
-    df = reactive({
+    # On gene query change, get the corresponding transcript rows
+    genedf = reactive({
       query=input$genequery
       if(query==''){return()}
+      genedf=exprdf[which(exprdf$gene_name==query),]
+      #df=melt(exprdf[which(exprdf$gene_name==query),datcols], value.name = 'expression', variable.name='sampleName') #gives you the input to ggplot
+      #df=df[df$expression!=0,]
+    })
+    # On pre/post-capture change, select the relevant columns & return 2 dataframes (one for abundance, another for ratios)
+    df=reactive({
+      genedf=genedf()
       cap=input$capbtn
       if(cap=='Capture'){
         datcols = postcapcols
       } else {
         datcols = precapcols
       }
-      # Get ratio columns as well
-      #datcols=datcols + unlist(lapply(datcols, function(x){paste(x,'ratio',sep='_')}))
-      datcols=c(idcols,datcols)
-      df=melt(exprdf[which(exprdf$gene_name==query),datcols], value.name = 'expression', variable.name='sampleName') #gives you the input to ggplot
-      df=df[df$expression!=0,]
+      # Make abundance df
+      abund_df=melt(genedf[,c(idcols,datcols)], value.name = 'expression', variable.name='sampleName') #Melt data for input to ggplot
+      # Make ratio df
+      ratiocols=unlist(lapply(datcols, function(x){paste(x,'ratio',sep='_')}))
+      ratio_df=melt(genedf[,c(idcols,ratiocols)], value.name = 'expression', variable.name='sampleName') #Melt data for input to ggplot
+      list(abundance=abund_df, isouse=ratio_df)
     })
     # Make expression plot
     output$exprPlot = renderPlot({
-      if(input$genequery==''){return()}
       df=df()
+      abund_df = df[['abundance']]
+      abund_df = abund_df[abund_df$expression!=0,]
       scale=input$scalebtn
       if(scale=='Log2'){
-        doAbundancePlot_log(df,range(df$expression))
+        doAbundancePlot_log(abund_df,range(abund_df$expression))
       } else {
-        doAbundancePlot_linear(df,range(df$expression))
+        doAbundancePlot_linear(abund_df,range(abund_df$expression))
       }
     })
     # Make isoform usage plot
     output$ratioPlot = renderPlot({
-      if(input$genequery==''){return()}
       df=df()
+      isouse_df = df[['isouse']]
+      isouse_df = isouse_df[isouse_df$expression!=0,]
+      isouse_df = isouse_df[!is.na(isouse_df$expression),]
       scale=input$scalebtn
       if(scale=='Log2'){
-        doUsagePlot_log(df,range(df$expression))
+        doUsagePlot_log(isouse_df,range(isouse_df$expression))
       } else {
-        doUsagePlot_linear(df,range(df$expression))
+        doUsagePlot_linear(isouse_df,range(isouse_df$expression))
       }
     })
 })

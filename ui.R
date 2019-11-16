@@ -48,20 +48,28 @@ shinyUI(
     fluidRow(
       tags$head(
         # tags$style(type="text/css", "label{ display: table-cell; text-align: center; vertical-align: middle; } .form-group { display: table-row;}")
+        tags$style(type="text/css", " div<div.awesome-radio-class{ width: 10%;}")
       ),
-      column(12,
-        flowLayout(textInput('genequery', h5('Gene symbol:'),value = ''),
-                     # radioButtons('capbtn', '', choices = c('No capture','Capture'), selected = 'Capture',
-                     #    inline = T, width = NULL, choiceNames = NULL,
-                     #    choiceValues = NULL),
-                     # actionGroupButtons(c('captoggle','nocaptoggle'), c('Capture','No capture'), status = "default",
-                     #    size = "normal", direction = "horizontal", fullwidth = FALSE)
-                   awesomeRadio('capbtn', '', c('Capture','No capture'), selected = 'Capture', inline = FALSE,
-                                status = "primary", checkbox = FALSE, width = NULL),
-                   awesomeRadio('scalebtn', '', c('Log2','Linear'), selected = 'Log2', inline = FALSE,
-                                status = "primary", checkbox = FALSE, width = NULL)
-                     )
-      )
+      # column(12,
+      #   flowLayout(
+      #     textInput('genequery', h5('Gene symbol'),value = ''),
+      #      awesomeRadio('capbtn', h5('Capture probes'), c('Capture','No capture'), selected = 'Capture', inline = FALSE,
+      #                   status = "primary", checkbox = FALSE, width = NULL),
+      #      awesomeRadio('scalebtn', h5('Scale'), c('Log2','Linear'), selected = 'Log2', inline = FALSE,
+      #                   status = "primary", checkbox = FALSE, width = NULL)
+      #   )
+      # )
+      column(2,
+         textInput('genequery', h5('Gene symbol'),value = '')
+      ),
+      column(2,
+         awesomeRadio('capbtn', h5('Capture probes'), c('Capture','No capture'), selected = 'Capture', inline = FALSE,
+            status = "primary", checkbox = FALSE, width = '80%')
+      ),
+      column(2,
+         awesomeRadio('scalebtn', h5('Scale'), c('Log2','Linear'), selected = 'Log2', inline = FALSE,
+            status = "primary", checkbox = FALSE, width = NULL)
+        )
     ),
     fluidRow(
       column(6,

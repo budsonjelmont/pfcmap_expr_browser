@@ -29,24 +29,16 @@ postcapcols = c('PostCap_MSSM_060','PostCap_MSSM_072',
 
 # Define server logic to make the plots
 shinyServer(function(input, output) {
-    # Construct list of data columns to get
-    # datcols = reactive({
-    #   if(cap=='Capture'){
-    #     datcols = postcapcols
-    #   } else {
-    #     datcols = precapcols
-    #   }
-    # })
     # On gene query change, get the corresponding transcript rows
     genedf = reactive({
       query=input$genequery
       if(query==''){return()}
       genedf=exprdf[which(exprdf$gene_name==query),]
-      #df=melt(exprdf[which(exprdf$gene_name==query),datcols], value.name = 'expression', variable.name='sampleName') #gives you the input to ggplot
-      #df=df[df$expression!=0,]
     })
     # On pre/post-capture change, select the relevant columns & return 2 dataframes (one for abundance, another for ratios)
     df=reactive({
+      query=input$genequery
+      if(query==''){return()}
       genedf=genedf()
       cap=input$capbtn
       if(cap=='Capture'){
@@ -63,6 +55,8 @@ shinyServer(function(input, output) {
     })
     # Make expression plot
     output$exprPlot = renderPlot({
+      query=input$genequery
+      if(query==''){return()}
       df=df()
       abund_df = df[['abundance']]
       abund_df = abund_df[abund_df$expression!=0,]
@@ -75,6 +69,8 @@ shinyServer(function(input, output) {
     })
     # Make isoform usage plot
     output$ratioPlot = renderPlot({
+      query=input$genequery
+      if(query==''){return()}
       df=df()
       isouse_df = df[['isouse']]
       isouse_df = isouse_df[isouse_df$expression!=0,]

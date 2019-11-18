@@ -40,10 +40,10 @@ doAbundancePlot_log = function(df,yrange){
       panel.background = element_blank(),
       panel.border = element_rect(color='black', size=1.25, fill=NA, linetype='solid'),
       axis.text.x = element_text(colour='black', size=12, angle=30, hjust=1),
-      axis.text.y = element_text(colour='black', size=20),
+      axis.text.y = element_text(colour='black', size=14),
       axis.title.x = element_blank(),
-      axis.title.y = element_text(margin=margin(t=0, r=10.5, b=0, l=0), size=22),
-      axis.ticks.length = unit(0.33, 'cm'),
+      axis.title.y = element_text(margin=margin(t=0, r=10.5, b=0, l=0), size=16),
+      axis.ticks.length = unit(0.25, 'cm'),
       legend.position = 'none'
     ) +
     labs(x = 'Dilution')
@@ -72,10 +72,10 @@ doAbundancePlot_linear = function(df,yrange){
       panel.background = element_blank(),
       panel.border = element_rect(color='black', size=1.25, fill=NA, linetype='solid'),
       axis.text.x = element_text(colour='black', size=12, angle=30, hjust=1),
-      axis.text.y = element_text(colour='black', size=20),
+      axis.text.y = element_text(colour='black', size=14),
       axis.title.x = element_blank(),
-      axis.title.y = element_text(margin=margin(t=0, r=10.5, b=0, l=0), size=22),
-      axis.ticks.length = unit(0.33, 'cm'),
+      axis.title.y = element_text(margin=margin(t=0, r=10.5, b=0, l=0), size=16),
+      axis.ticks.length = unit(0.25, 'cm'),
       legend.position = 'none'
     ) +
     labs(x = 'Dilution')
@@ -106,13 +106,13 @@ doUsagePlot_log = function(df,yrange){
       panel.background = element_blank(),
       panel.border = element_rect(color='black', size=1.25, fill=NA, linetype='solid'),
       axis.text.x = element_text(colour='black', size=12, angle=30, hjust=1),
-      axis.text.y = element_text(colour='black', size=20),
+      axis.text.y = element_text(colour='black', size=16),
       #axis.ticks.y = element_blank(),
       #axis.text.y = element_blank(),
       axis.title.x = element_blank(),
       # axis.title.y = element_blank(),
       # axis.title.y = element_text(margin=margin(t=0, r=10.5, b=0, l=0), size=22),
-      axis.ticks.length = unit(0.33, 'cm'),
+      axis.ticks.length = unit(0.25, 'cm'),
       legend.position = 'none'
     ) +
     labs(x = 'Dilution')
@@ -141,13 +141,13 @@ doUsagePlot_linear = function(df,yrange){
       panel.background = element_blank(),
       panel.border = element_rect(color='black', size=1.25, fill=NA, linetype='solid'),
       axis.text.x = element_text(colour='black', size=12, angle=30, hjust=1),
-      axis.text.y = element_text(colour='black', size=20),
+      axis.text.y = element_text(colour='black', size=16),
       #axis.ticks.y = element_blank(),
       #axis.text.y = element_blank(),
       axis.title.x = element_blank(),
       # axis.title.y = element_blank(),
       # axis.title.y = element_text(margin=margin(t=0, r=10.5, b=0, l=0), size=22),
-      axis.ticks.length = unit(0.33, 'cm'),
+      axis.ticks.length = unit(0.25, 'cm'),
       legend.position = 'none'
     ) +
     labs(x = 'Dilution')

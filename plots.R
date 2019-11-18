@@ -11,7 +11,6 @@ ggshape = 1
 ###############
 # 1a. Func to draw the abundance violin plot (log scale)
 doAbundancePlot_log = function(df,yrange){
-  df$expression = as.numeric(as.character(df$expression))
   Ylow=log2(yrange[1])
   Yhigh=log2(yrange[2])
   Ybuffer=(Yhigh-Ylow)/5
@@ -43,7 +42,6 @@ doAbundancePlot_log = function(df,yrange){
 }
 # 1b. Func to draw the abundance violin plot (linear scale)
 doAbundancePlot_linear = function(df,yrange){
-  df$expression = as.numeric(as.character(df$expression))
   Ylow=yrange[1]
   Yhigh=yrange[2]
   Ybuffer=(Yhigh-Ylow)/5
@@ -77,7 +75,6 @@ doAbundancePlot_linear = function(df,yrange){
 ###############
 # 2a. Func to draw the isoform usage ratio violin plot (log scale)
 doUsagePlot_log = function(df,yrange){
-  df$expression = as.numeric(as.character(df$expression))
   Ylow=log2(yrange[1])
   Yhigh=log2(yrange[2])
   Ybuffer=(Yhigh-Ylow)/5
@@ -112,7 +109,6 @@ doUsagePlot_log = function(df,yrange){
 }
 # 2a. Func to draw the isoform usage ratio violin plot (linear scale)
 doUsagePlot_linear = function(df,yrange){
-  df$expression = as.numeric(as.character(df$expression))
   Ylow=0
   Yhigh=1
   Ybuffer=(Yhigh-Ylow)/5

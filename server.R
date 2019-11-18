@@ -1,7 +1,7 @@
 library(shiny)
 
 library(ggplot2)
-library(reshape2)
+library(data.table)
 source('./plots.R')
 
 idcols = c('Pbid','gene_name')
@@ -23,6 +23,13 @@ postcapcols = c('PostCap_MSSM_060','PostCap_MSSM_072',
                 'PostCap_MSSM_182','PostCap_MSSM_401',
                 'PostCap_Pitt_034','PostCap_Pitt_046',
                 'PostCap_Pitt_122','PostCap_Pitt_140')
+
+# Read dataset
+infile = 'FL-RH_combined_joined-isoform-TPM-counts_median_average_YH_GeneIDsAdded+ratios.csv'
+exprdf = fread(infile)
+
+# Preprocessing the expression data frame to add usage ratios
+rownames(exprdf) = exprdf$Pbid
 
 #pbids = c('PBfusion.988.2','PBfusion.989.2')
 #df = melt(exprdf[pbids,datcols], value.name = 'expression', variable.name='sampleName') #gives you the input to ggplot
@@ -47,10 +54,10 @@ shinyServer(function(input, output) {
         datcols = precapcols
       }
       # Make abundance df
-      abund_df=melt(genedf[,c(idcols,datcols)], value.name = 'expression', variable.name='sampleName') #Melt data for input to ggplot
+      abund_df=melt(genedf[,c(idcols,datcols), with=FALSE], id.vars='Pbid', measure.vars=datcols, value.name='expression') #Melt data for input to ggplot
       # Make ratio df
       ratiocols=unlist(lapply(datcols, function(x){paste(x,'ratio',sep='_')}))
-      ratio_df=melt(genedf[,c(idcols,ratiocols)], value.name = 'expression', variable.name='sampleName') #Melt data for input to ggplot
+      ratio_df=melt(genedf[,c(idcols,ratiocols), with=FALSE], id.vars='Pbid', measure.vars=ratiocols, value.name='expression') #Melt data for input to ggplot
       list(abundance=abund_df, isouse=ratio_df)
     })
     # Make expression plot

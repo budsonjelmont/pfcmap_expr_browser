@@ -1,5 +1,4 @@
 library(ggplot2)
-library(gdata)
 
 # Plot params #
 plotPath = 'ncRNAexprPlots/'
@@ -8,13 +7,6 @@ ggshape = 1
 #Yaxlow = -8
 #Yaxhigh = 8
 #Yaxstep = 2
-
-# Read dataset
-infile = 'FL-RH_combined_joined-isoform-TPM-counts_median_average_YH_GeneIDsAdded+ratios.csv'
-exprdf = read.csv(infile)
-
-# Preprocessing the expression data frame to add usage ratios
-rownames(exprdf) = exprdf$Pbid
 
 ###############
 # 1a. Func to draw the abundance violin plot (log scale)

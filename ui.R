@@ -10,37 +10,10 @@
 library(shiny)
 library(shinyWidgets)
 
-# Define UI for application that draws a histogram
-# shinyUI(fluidPage(
-#   # Application title
-#   tags$script(src = 'init_lookups.js'),
-#   
-#   
-#   titlePanel(
-#     tags$div(class = 'container text-center',
-#       tags$h1('PFC Map expression browser'),
-#     ),
-#   windowTitle = 'browsertitle'),
-#   
-#   # Sidebar with a slider input for number of bins 
-#   sidebarLayout(
-#     sidebarPanel(
-#       textInput('genequery', h3('Gene symbol:'), 
-#                 value = '') 
-#     ),
-#     
-#     # Show a plot of the generated distribution
-#     mainPanel(
-#        plotOutput('exprPlot'),
-#        plotOutput('ratioPlot')
-#     )
-#   )
-# ))
-
 shinyUI(
   fluidPage(
 # Application title
-#   tags$script(src = 'init_lookups.js'),
+    tags$script(src = 'init_lookups.js'),
 #   titlePanel(
 #     tags$div(class = 'container text-center',
 #       tags$h1('PFC Map expression browser'),
@@ -60,7 +33,8 @@ shinyUI(
       #   )
       # )
       column(2,
-         textInput('genequery', h5('Gene symbol'),value = '')
+         selectizeInput('genequery', h5('Gene symbol'), choices = NULL)
+         #textInput('genequery', h5('Gene symbol'),value = '')
       ),
       column(2,
          awesomeRadio('capbtn', h5('Capture probes'), c('Capture','No capture'), selected = 'Capture', inline = FALSE,

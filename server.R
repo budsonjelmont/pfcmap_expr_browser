@@ -35,10 +35,19 @@ rownames(exprdf) = exprdf$Pbid
 #df = melt(exprdf[pbids,datcols], value.name = 'expression', variable.name='sampleName') #gives you the input to ggplot
 
 # Define server logic to make the plots
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
+    updateSelectizeInput(session, 'genequery', choices=c('',exprdf$gene_name), selected=NULL, server=TRUE)
+    #updateSelectizeInput(session, 'genequery', choices=cbind(name=c('',exprdf$gene_name),c('',exprdf$id)), options=list(render= I(
+    #  'function(item, escape){return "<div>" + escape(item.name) + "</div>";}')
+    #  ),
+    #  selected=NULL,
+    #  server=TRUE
+    #)
     # On gene query change, get the corresponding transcript rows
     genedf = reactive({
       query=input$genequery
+      print('query:')
+      print(query)
       if(query==''){return()}
       genedf=exprdf[which(exprdf$gene_name==query),]
     })

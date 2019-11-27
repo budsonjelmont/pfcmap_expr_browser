@@ -31,16 +31,13 @@ exprdf = fread(infile)
 # Preprocessing the expression data frame to add usage ratios
 rownames(exprdf) = exprdf$Pbid
 
-#pbids = c('PBfusion.988.2','PBfusion.989.2')
-#df = melt(exprdf[pbids,datcols], value.name = 'expression', variable.name='sampleName') #gives you the input to ggplot
-
 # Define server logic to make the plots
 shinyServer(function(input, output, session) {
-    updateSelectizeInput(session, 'genequery', choices=c('',exprdf$gene_name), selected=NULL, server=TRUE)
+    updateSelectizeInput(session, 'genequery', choices=c('',exprdf$gene_name), selected=character(0), server=TRUE)
     #updateSelectizeInput(session, 'genequery', choices=cbind(name=c('',exprdf$gene_name),c('',exprdf$id)), options=list(render= I(
     #  'function(item, escape){return "<div>" + escape(item.name) + "</div>";}')
     #  ),
-    #  selected=NULL,
+    #  selected=character(0),
     #  server=TRUE
     #)
     # On gene query change, get the corresponding transcript rows

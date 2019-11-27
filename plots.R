@@ -22,7 +22,7 @@ doAbundancePlot_log = function(df,yrange){
     geom_boxplot(fill='white', color='black', width=0.1, outlier.alpha = ggalpha, outlier.shape = ggshape) +
     geom_point(fill=NA, color = 'black', alpha = ggalpha, shape = ggshape, show.legend = FALSE) +
     #    scale_fill_manual(values=c('darkgreen', 'blue', 'purple', 'orange')) +
-    ggtitle('Abundance') +
+    ggtitle('Isoform Abundance') +
     ylab('log2 expression') +
     scale_y_continuous(limits=c(Yaxlow,Yaxhigh),breaks=seq(Yaxlow,Yaxhigh,by=Yaxstep),labels=seq(Yaxlow,Yaxhigh,by=Yaxstep)) + 
     theme(
@@ -53,7 +53,7 @@ doAbundancePlot_linear = function(df,yrange){
     geom_boxplot(fill='white', color='black', width=0.1, outlier.alpha = ggalpha, outlier.shape = ggshape) +
     geom_point(fill=NA, color = 'black', alpha = ggalpha, shape = ggshape, show.legend = FALSE) +
     #    scale_fill_manual(values=c('darkgreen', 'blue', 'purple', 'orange')) +
-    ggtitle('Abundance') +
+    ggtitle('Isoform Abundance') +
     ylab('Expression') +
     scale_y_continuous(limits=c(Yaxlow,Yaxhigh),breaks=seq(Yaxlow,Yaxhigh,by=Yaxstep),labels=seq(Yaxlow,Yaxhigh,by=Yaxstep)) + 
     theme(
@@ -86,7 +86,7 @@ doUsagePlot_log = function(df,yrange){
     geom_boxplot(fill='white', color='black', width=0.1, outlier.alpha = ggalpha, outlier.shape = ggshape) +
     geom_point(fill=NA, color = 'black', alpha = ggalpha, shape = ggshape, show.legend = FALSE) +
     #    scale_fill_manual(values=c('darkgreen', 'blue', 'purple', 'orange')) +
-    ggtitle('Usage') +
+    ggtitle('Isoform Usage') +
     ylab('') +
     scale_y_continuous(limits=c(Yaxlow,Yaxhigh),breaks=seq(Yaxlow,Yaxhigh,by=Yaxstep),labels=seq(Yaxlow,Yaxhigh,by=Yaxstep)) + 
     theme(
@@ -120,7 +120,7 @@ doUsagePlot_linear = function(df,yrange){
     geom_boxplot(fill='white', color='black', width=0.1, outlier.alpha = ggalpha, outlier.shape = ggshape) +
     geom_point(fill=NA, color = 'black', alpha = ggalpha, shape = ggshape, show.legend = FALSE) +
     #    scale_fill_manual(values=c('darkgreen', 'blue', 'purple', 'orange')) +
-    ggtitle('Usage') +
+    ggtitle('Isoform Usage') +
     ylab('') +
     scale_y_continuous(limits=c(Yaxlow,Yaxhigh),breaks=seq(Yaxlow,Yaxhigh,by=Yaxstep),labels=seq(Yaxlow,Yaxhigh,by=Yaxstep)) + 
     theme(

@@ -13,7 +13,7 @@ library(shinyWidgets)
 shinyUI(
   fluidPage(
 # Application title
-    tags$script(src = 'init_lookups.js'),
+#    tags$script(src = 'form_controls.js'),
 #   titlePanel(
 #     tags$div(class = 'container text-center',
 #       tags$h1('PFC Map expression browser'),
@@ -26,7 +26,7 @@ shinyUI(
       # column(12,
       #   flowLayout(
       #     textInput('genequery', h5('Gene symbol'),value = ''),
-      #      awesomeRadio('capbtn', h5('Capture probes'), c('Capture','No capture'), selected = 'Capture', inline = FALSE,
+      #      awesomeRadio('capbtn', h5('LncRNA enrichment'), c('Capture','No capture'), selected = 'Capture', inline = FALSE,
       #                   status = "primary", checkbox = FALSE, width = NULL),
       #      awesomeRadio('scalebtn', h5('Scale'), c('Log2','Linear'), selected = 'Log2', inline = FALSE,
       #                   status = "primary", checkbox = FALSE, width = NULL)
@@ -37,7 +37,7 @@ shinyUI(
          #textInput('genequery', h5('Gene symbol'),value = '')
       ),
       column(2,
-         awesomeRadio('capbtn', h5('Capture probes'), c('Capture','No capture'), selected = 'Capture', inline = FALSE,
+         awesomeRadio('capbtn', h5('LncRNA enrichment'), c('Capture','No capture'), selected = 'Capture', inline = FALSE,
             status = "primary", checkbox = FALSE, width = '80%')
       ),
       column(2,
